@@ -58,15 +58,19 @@ public class ReplaceStringFieldValue<R extends ConnectRecord<R>> implements Tran
         Object value = record.value();
 
         if (value instanceof Map) {
+            log.info("Value is a Map for field {}", field);
             Map<String, Object> valueMap = (Map<String, Object>) value;
             if (valueMap.containsKey(field)) {
                 String fieldValue = (String) valueMap.get(field);
                 String transformedValue = replacePatterns(fieldValue);
+                log.info("Original value: {}, transformed value: {}", fieldValue, transformedValue);
                 valueMap.put(field, transformedValue);
             }
-        } else if (value instanceof String && field.equalsIgnoreCase("value")) {
+        } else if (value instanceof String) { // && field.equalsIgnoreCase("value")
+            log.info("Value is a String:");
             String fieldValue = (String) value;
             String transformedValue = replacePatterns(fieldValue);
+            log.info("Original value: {}, transformed value: {}", fieldValue, transformedValue);
             return record.newRecord(record.topic(), record.kafkaPartition(), record.keySchema(), record.key(), record.valueSchema(), transformedValue, record.timestamp());
         }
 
