@@ -39,7 +39,6 @@ public class ReplaceStringFieldValue<R extends ConnectRecord<R>> implements Tran
         SimpleConfig config = new SimpleConfig(CONFIG_DEF, configs);
         field = config.getString(FIELD_CONFIG);
         replacement = config.getString(REPLACEMENT_CONFIG);
-
         patternList = Pattern.compile(",")
                 .splitAsStream(config.getString(PATTERNS_CONFIG))
                 .map(Pattern::compile)
@@ -49,7 +48,7 @@ public class ReplaceStringFieldValue<R extends ConnectRecord<R>> implements Tran
             throw new ConfigException(PATTERNS_CONFIG, config.getString(PATTERNS_CONFIG), "Must contain at least one pattern");
         }
 
-        log.info("Configured RegexpReplace SMT with patterns: {} and replacement: {}", patternList, replacement);
+        log.info("Configured RegexpReplace SMT with patternList: {} and replacement: {}, field: {}", patternList, replacement, field);
     }
 
     @SuppressWarnings("unchecked")
